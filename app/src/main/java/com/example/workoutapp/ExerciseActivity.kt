@@ -1,6 +1,8 @@
 package com.example.workoutapp
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -14,19 +16,26 @@ import android.widget.Toast
 import com.example.workoutapp.databinding.ActivityExerciseBinding
 import android.widget.Toolbar
 import androidx.appcompat.app.ActionBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.workoutapp.databinding.ActivityFinishBinding
+import com.example.workoutapp.databinding.ActivityMainBinding
+import com.example.workoutapp.databinding.CustomBackDialogBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
+
 
     private var exerciseBinding: ActivityExerciseBinding? = null
 
     private var restTimer: CountDownTimer? = null
     private var restProgress: Int = 0
 
+    private var restTimerDuration: Long = -1
     private var exerciseTimer: CountDownTimer? = null
-    private var exerciseProgress: Int = 0
 
+    private var exerciseProgress: Int = 0
+    private var ExerciseTimerDuration: Long = -1
     private var exerciseList: ArrayList<ExerciseModel>? = null
 
     private var currentExercise: Int = -1
@@ -34,6 +43,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var tts:TextToSpeech? = null
 
     private var player: MediaPlayer? = null
+
+    private var exerciseAdapter : ExerciseStatusAdapter?=null
 
     @SuppressLint("UseSupportActionBar")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,13 +63,50 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         // putting a back button on it
         exerciseBinding?.toolbarExercise?.setNavigationOnClickListener{
-            onBackPressed()
+            onDialogForBackButton()
         }
 
         tts = TextToSpeech(this, this)
 
         setUpRestView()
+        setupExerciseStatsRecyclerView()
 
+    }
+
+    private fun onDialogForBackButton() {
+        val customDialog = Dialog(this)
+
+        // we need to create a custom binding since the activity is not bound with this xml
+        val dialogBinding :CustomBackDialogBinding = CustomBackDialogBinding.inflate(layoutInflater)
+
+        // now this custom dialog will look like the xml file.
+        customDialog.setContentView(dialogBinding.root)
+
+        // ensure the user can only cancel by pressing a dialog button
+        customDialog.setCanceledOnTouchOutside(false)
+
+        dialogBinding.tvYes.setOnClickListener{
+            this@ExerciseActivity.finish()
+            customDialog.dismiss()
+        }
+
+        dialogBinding.tvNo.setOnClickListener{
+            customDialog.dismiss()
+        }
+        customDialog.show()
+    }
+
+    override fun onBackPressed() {
+        onDialogForBackButton()
+        //super.onBackPressed()
+    }
+
+    private fun setupExerciseStatsRecyclerView(){
+        exerciseBinding?.rvExerciseStatus?.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        exerciseAdapter = ExerciseStatusAdapter((exerciseList!!))
+        exerciseBinding?.rvExerciseStatus?.adapter = exerciseAdapter
     }
 
     private fun setUpRestView(){
@@ -108,9 +156,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 exerciseBinding?.tvTimer?.text = (10 - restProgress).toString()
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onFinish() {
                 currentExercise++
                 exerciseBinding?.tvTitle?.text = "Rest"
+                exerciseList!![currentExercise].setSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
                 setupExerciseView()
             }
         }.start()
@@ -152,13 +203,19 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
+
                 if(currentExercise < exerciseList?.size!! - 1) {
+                    exerciseList!![currentExercise].setSelected(false)
+                    exerciseList!![currentExercise].setCompleted(true)
+                    exerciseAdapter!!.notifyDataSetChanged()
                     restProgress = 0
                     setUpRestView()
                 }else{
-                    Toast.makeText(this@ExerciseActivity,
-                        "Congratulations! You have completed the 7 minute workout",
-                        Toast.LENGTH_LONG).show()
+                    finish()
+                    val intent = Intent(this@ExerciseActivity,
+                        FinishActivity::class.java)
+                    startActivity(intent)
+
                 }
             }
         }.start()

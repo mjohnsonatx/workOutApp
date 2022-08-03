@@ -10,8 +10,8 @@ class ExerciseModel(
     fun getId():Int{return id}
     fun getName():String{return name}
     fun getImage():Int{return image}
-    fun isCompleted():Boolean{return isCompleted}
-    fun isSelected():Boolean {return isSelected}
+    fun getIsCompleted():Boolean{return isCompleted}
+    fun getIsSelected():Boolean {return isSelected}
 
     fun setId(id:Int){
         this.id = id
@@ -32,6 +32,7 @@ class ExerciseModel(
     fun setSelected(isSelected: Boolean){
         this.isSelected = isSelected
     }
+
 
 
 }

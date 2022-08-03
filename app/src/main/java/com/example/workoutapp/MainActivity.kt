@@ -17,14 +17,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         binding?.flStart?.setOnClickListener{
-            val intent = Intent(this, ExerciseActivity::class.java)
+            val intent = Intent(this@MainActivity, ExerciseActivity::class.java)
             startActivity(intent)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
         // resets binding to null to avoid memory leak.
         binding = null
     }
