@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.Toast
+import com.example.workoutapp.databinding.ActivityBmiactivityBinding
 import com.example.workoutapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +22,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ExerciseActivity::class.java)
             startActivity(intent)
         }
+
+        binding?.flBMI?.setOnClickListener{
+            val intent = Intent(this@MainActivity, BMIActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onDestroy() {

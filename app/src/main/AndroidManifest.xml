@@ -20,7 +20,10 @@
         android:theme="@style/Theme.WorkOutApp"
         tools:targetApi="31">
         <activity
-            android:name=".finishActivity"
+            android:name=".BMIActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FinishActivity"
             android:exported="false" />
         <activity
             android:name=".ExerciseActivity"
