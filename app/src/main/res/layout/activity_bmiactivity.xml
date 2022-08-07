@@ -16,6 +16,7 @@
         android:id="@+id/tilMetricUnitWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_bmi_activity"
         android:layout_margin="10dp"
         app:boxStrokeColor="@color/colorAccent"
         android:textColorHint="@color/colorAccent"
