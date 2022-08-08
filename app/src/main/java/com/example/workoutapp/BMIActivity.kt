@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.example.workoutapp.databinding.ActivityBmiactivityBinding
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class BMIActivity : AppCompatActivity() {
 
@@ -39,7 +41,8 @@ class BMIActivity : AppCompatActivity() {
 
                 val bmi = weightValue/(heightValue*heightValue)
 
-                //TODO display results
+                displayBMIResult(bmi)
+
             }else{
                 Toast.makeText(this,"Please enter valid numbers.",
                     Toast.LENGTH_SHORT).show()
@@ -49,12 +52,34 @@ class BMIActivity : AppCompatActivity() {
     }
     private fun displayBMIResult(bmi:Float){
 
-        val bmilabel : String
+        val bmiLabel : String
         val bmiDescription: String
 
-        if(bmi.compareTo(15f))
+        if(bmi.compareTo(15f)<=0){
+            bmiLabel="Severely Underweight"
+            bmiDescription="Eat more food."
+        }else if (bmi.compareTo(15f)>0 && bmi.compareTo(16f)<=0){
+            bmiLabel="Very underweight"
+            bmiDescription="Eat more food"
+        }else if (bmi.compareTo(16f)>0 && bmi.compareTo(18.5f) <= 0){
+            bmiLabel="Underweight"
+            bmiDescription = "Eat more food"
+        }else if (bmi.compareTo(18.5f)> 0 && bmi.compareTo(25f)<=0){
+            bmiLabel="Normal"
+            bmiDescription="Your BMI is within normal parameters."
+        }else {
+            bmiLabel = "Obese Class III"
+            bmiDescription = "Seek medical professional"
+        }
+                // TODO finish BMI levels, consider making enum.
+
+        val bmiValue:String=BigDecimal(bmi.toDouble()).setScale(2,
+            RoundingMode.HALF_EVEN).toString()
 
         bmi_binding?.llDiplayBMIResult?.visibility = View.VISIBLE
+        bmi_binding?.tvBMIValue?.text = bmiValue
+        bmi_binding?.tvBMIType?.text = bmiLabel
+        bmi_binding?.tvBMIDescription?.text = bmiDescription
 
     }
 
