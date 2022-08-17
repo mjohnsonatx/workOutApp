@@ -59,13 +59,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             actionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
-        exerciseList = Constants.defaultExerciseList()
-
         // putting a back button on it
         exerciseBinding?.toolbarExercise?.setNavigationOnClickListener{
             onDialogForBackButton()
         }
 
+        exerciseList = Constants.defaultExerciseList()
         tts = TextToSpeech(this, this)
 
         setUpRestView()
