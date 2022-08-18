@@ -82,14 +82,12 @@
         app:layout_constraintStart_toEndOf="@id/flBMI"
         app:layout_constraintTop_toBottomOf="@id/flStart">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:text=""
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:src = "@drawable/ic_calendar"
+             />
     </FrameLayout>
 
     <TextView
@@ -100,9 +98,8 @@
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/flBMI"
-        app:layout_constraintTop_toBottomOf="@id/flBMI" />
+        app:layout_constraintEnd_toEndOf="@id/flHistory"
+        app:layout_constraintTop_toBottomOf="@id/flHistory" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding?.flHistory?.setOnClickListener{
+            val intent = Intent(this@MainActivity, HistoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {
